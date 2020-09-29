@@ -59,7 +59,7 @@ public class PedidoController {
     }
 
     @ApiOperation(value = "Responsável por persistir um Pedido, a partir de um consumer {Pedido} passado como parâmetro no corpo da requisição...")
-    @PostMapping(path = "/pedidos/save")
+    @PostMapping(path = "/pedidos/save", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Pedido> savePedido(@Valid @RequestBody PedidoDTO pedidoDTO) {
          return new ResponseEntity<>(geraPedidoService.gerarPedido(PedidoMapper.INSTANCE.pedidoDTOToPedido(pedidoDTO)), HttpStatus.CREATED);
     }
