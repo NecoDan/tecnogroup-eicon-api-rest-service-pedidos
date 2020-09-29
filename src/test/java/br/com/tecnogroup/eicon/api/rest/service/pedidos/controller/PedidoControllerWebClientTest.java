@@ -1,6 +1,6 @@
 package br.com.tecnogroup.eicon.api.rest.service.pedidos.controller;
 
-import br.com.tecnogroup.eicon.api.rest.service.pedidos.controller.advice.AdviceGeneralController;
+import br.com.tecnogroup.eicon.api.rest.service.pedidos.controller.advice.AdvicePedidoController;
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.model.pedido.Pedido;
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.service.negocio.Desconto;
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.service.pedidos.GeraPedidoService;
@@ -59,7 +59,7 @@ public class PedidoControllerWebClientTest {
 
         webTestClient = WebTestClient
                 .bindToController(pedidoController)
-                .controllerAdvice(AdviceGeneralController.class)
+                .controllerAdvice(AdvicePedidoController.class)
                 .build();
 
         JavaTimeModule module = new JavaTimeModule();

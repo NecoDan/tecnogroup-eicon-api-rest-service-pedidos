@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class AdviceGeneralController extends ResponseEntityExceptionHandler {
+public class AdvicePedidoController extends ResponseEntityExceptionHandler {
 
     private static final String CHAVE_MAP_TIMESTAMP = "timestamp";
 
