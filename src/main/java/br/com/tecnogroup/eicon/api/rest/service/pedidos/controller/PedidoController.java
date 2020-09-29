@@ -31,9 +31,9 @@ import java.util.stream.Collectors;
 
 
 @Slf4j
-@Validated
-@CrossOrigin(origins = "*")
 @RestController
+@CrossOrigin(origins = "*")
+@Validated
 @RequiredArgsConstructor
 @Api(value = "Pedido")
 public class PedidoController {
@@ -59,9 +59,9 @@ public class PedidoController {
     }
 
     @ApiOperation(value = "Responsável por persistir um Pedido, a partir de um consumer {Pedido} passado como parâmetro no corpo da requisição...")
-    @PostMapping(path = "/pedidos/save", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<Pedido> savePedido(@RequestBody @Valid @Validated PedidoDTO pedidoDTO) {
-        return new ResponseEntity<>(geraPedidoService.gerarPedido(PedidoMapper.INSTANCE.pedidoDTOToPedido(pedidoDTO)), HttpStatus.CREATED);
+    @PostMapping(path = "/pedidos/save")
+    public ResponseEntity<Pedido> savePedido(@Valid @RequestBody PedidoDTO pedidoDTO) {
+         return new ResponseEntity<>(geraPedidoService.gerarPedido(PedidoMapper.INSTANCE.pedidoDTOToPedido(pedidoDTO)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Responsável por persistir uma lista de Pedido(s), a partir de um consumer {Pedido} passado como parâmetro no corpo da requisição...")

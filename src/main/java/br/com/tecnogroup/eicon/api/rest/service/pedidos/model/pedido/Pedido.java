@@ -55,7 +55,7 @@ public class Pedido extends AbstractEntity {
     private BigDecimal valor;
 
     @Min(1)
-    @PositiveOrZero
+    @Positive
     @DecimalMin(value = "1.0", inclusive = true)
     @Digits(integer = 19, fraction = 6)
     @Column(name = "qtde")
@@ -98,6 +98,11 @@ public class Pedido extends AbstractEntity {
     private void inicializarValor() {
         if (Objects.isNull(this.valor) || DecimalUtil.isEqualsToZero(this.valor))
             this.valor = BigDecimal.ZERO;
+    }
+
+    public void tratarQuantidade() {
+        if (Objects.isNull(this.quantidade) || DecimalUtil.isEqualsToZero(this.quantidade))
+            this.quantidade = BigDecimal.ONE;
     }
 
     public void calcularValorTotal(Desconto desconto) {

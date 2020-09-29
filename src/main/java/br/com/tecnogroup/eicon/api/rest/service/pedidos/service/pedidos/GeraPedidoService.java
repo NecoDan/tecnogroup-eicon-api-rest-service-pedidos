@@ -64,6 +64,7 @@ public class GeraPedidoService implements IGeraPedidoService {
         pedido.setCliente(gerarCliente(pedido.getCodigoCliente()));
         pedido.geraId();
         pedido.gerarDataCorrente();
+        pedido.tratarQuantidade();
 
         Desconto desconto = this.builderDescontoService.obterDescontoAPartir(pedido.getQuantidade());
         pedido.calcularValorTotal(desconto);
