@@ -48,7 +48,7 @@ public class Cliente extends AbstractEntity {
     }
 
     @JsonIgnore
-    public Cliente geraDesAtivado() {
+    public Cliente geraDesativado() {
         desativado();
         return this;
     }

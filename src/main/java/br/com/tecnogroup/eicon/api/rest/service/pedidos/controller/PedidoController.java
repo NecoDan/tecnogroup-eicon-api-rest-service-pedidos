@@ -1,6 +1,8 @@
 package br.com.tecnogroup.eicon.api.rest.service.pedidos.controller;
 
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.controller.advice.PedidoNotFoundException;
+import br.com.tecnogroup.eicon.api.rest.service.pedidos.mappers.PedidoMapper;
+import br.com.tecnogroup.eicon.api.rest.service.pedidos.model.dtos.PedidoDTO;
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.model.pedido.Pedido;
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.service.pedidos.IGeraPedidoService;
 import br.com.tecnogroup.eicon.api.rest.service.pedidos.service.pedidos.IPedidoService;
@@ -25,6 +27,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Slf4j
 @Validated
@@ -48,29 +52,33 @@ public class PedidoController {
     }
 
     @ApiOperation(value = "Retorna um único pedido existente, caso exista, a partir de seu número controle {valor inteiro} existente e registrado.")
-    @GetMapping("/pedidos/{numeroControle}")
+    @GetMapping(path = "/pedidos/{numeroControle}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Pedido> getOnePedido(@PathVariable(value = "numeroControle") @Valid Long numeroControle) {
         Optional<Pedido> optionalPedido = Optional.of(pedidoService.recuperarPorNumeroControle(numeroControle));
         return new ResponseEntity<>(optionalPedido.orElseThrow(() -> new PedidoNotFoundException(numeroControle)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Responsável por persistir um Pedido, a partir de um consumer {Pedido} passado como parâmetro no corpo da requisição...")
-    @PostMapping("/pedidos/save")
-    public ResponseEntity<Pedido> savePedido(@RequestBody @Valid Pedido pedido) {
-        return new ResponseEntity<>(geraPedidoService.gerarPedido(pedido), HttpStatus.CREATED);
+    @PostMapping(path = "/pedidos/save", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<Pedido> savePedido(@RequestBody @Valid @Validated PedidoDTO pedidoDTO) {
+        return new ResponseEntity<>(geraPedidoService.gerarPedido(PedidoMapper.INSTANCE.pedidoDTOToPedido(pedidoDTO)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Responsável por persistir uma lista de Pedido(s), a partir de um consumer {Pedido} passado como parâmetro no corpo da requisição...")
-    @PostMapping("/pedidos")
-    public ResponseEntity<List<Pedido>> saveAllPedidos(@RequestBody @Valid List<Pedido> pedidos) {
-        return new ResponseEntity<>(geraPedidoService.gerarPedidos(pedidos), HttpStatus.CREATED);
+    @PostMapping(path = "/pedidos", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<List<Pedido>> saveAllPedidos(@RequestBody @Valid List<PedidoDTO> pedidosDTO) {
+        if (Objects.isNull(pedidosDTO) || pedidosDTO.isEmpty())
+            throw new PedidoNotFoundException("Parametros inválidos. " + MSG_VALIDACAO_NOT_FOUND);
+
+        List<Pedido> pedidoList = pedidosDTO.stream().filter(Objects::nonNull).map(PedidoMapper.INSTANCE::pedidoDTOToPedido).collect(Collectors.toList());
+        return new ResponseEntity<>(geraPedidoService.gerarPedidos(pedidoList), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Responsável por atualizar um Pedido, a partir de um {@PathVariable} contendo o {Número Controle} do registro do Pedido e um consumer {Pedido} como corpo da requisição.")
     @PutMapping("/pedidos/{numeroControle}")
     public ResponseEntity<Pedido> updatePedido(@PathVariable(value = "numeroControle") Long numeroControle,
-                                               @RequestBody @Valid Pedido pedido) {
-        Optional<Pedido> pedidoOptional = Optional.of(geraPedidoService.atualizarPedido(numeroControle, pedido));
+                                               @RequestBody @Valid PedidoDTO pedidoDTO) {
+        Optional<Pedido> pedidoOptional = Optional.of(geraPedidoService.atualizarPedido(numeroControle, PedidoMapper.INSTANCE.pedidoDTOToPedido(pedidoDTO)));
         return pedidoOptional
                 .map(p -> new ResponseEntity<>(p, HttpStatus.ACCEPTED))
                 .orElseGet(() -> new ResponseEntity(MSG_VALIDACAO_NOT_FOUND, HttpStatus.NOT_FOUND));
@@ -83,14 +91,14 @@ public class PedidoController {
     }
 
     @ApiOperation(value = "Retorna todos os pedidos, a partir do filtro {Código Cliente} referente ao codigo do cliente aos quais estão associado(s) e pedido(s) gerado(s).")
-    @GetMapping("pedidos/buscarPorCodigoCliente")
+    @GetMapping(path = "pedidos/buscarPorCodigoCliente", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<Pedido>> listAllFromCodigoCliente(@RequestParam("codigo") @Valid Long codigo) {
         return getResponseDefaultFromList(pedidoService.recuperarPorCodigoCliente(codigo));
     }
 
     @ApiOperation(value = "Retorna todos os pedidos, a partir dos filtro(s) {Data Inicial} e {Data Final}, que representam o intervalo de datas " +
             " aos quais foram inseridas. O filtro da datas passado como parametro devem ser no formato {dd/MM/yyyy}.")
-    @GetMapping("/pedidos/buscarPorPeriodo")
+    @GetMapping(path = "/pedidos/buscarPorPeriodo", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<Pedido>> listAllFromPeriodo(@RequestParam("dataInicio") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataInicio,
                                                            @RequestParam("dataFim") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataFim) {
         return getResponseDefaultFromList(pedidoService.recuperarPorPeriodo(dataInicio, dataFim));

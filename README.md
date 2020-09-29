@@ -49,10 +49,10 @@
   - Retornar um único pedido, a partir de um único número de controle como filtro (JSON/XML):
     - `http://localhost:8080/pedidos/1`
     
-  - Retornar uma lista de pedidos, a partir de um código de cliente válido como filtro (JSON/XML:   
+  - Retornar uma lista de pedidos, a partir de um código de cliente válido como filtro (JSON/XML):   
     - `http://localhost:8080/pedidos/buscarPorCodigoCliente?codigo=121215`
   
- - Retornar uma lista de pedidos, a partir do intervalo de datas como filtros (JSON/XML:   
+ - Retornar uma lista de pedidos, a partir do intervalo de datas como filtros (JSON/XML):   
      - `http://localhost:8080/pedidos/buscaPorPeriodo?dataInicio=01/01/2020&dataFim=12/12/2020`
      
  Entre outros, aos quais podem ser identificados no endereço fornecido pelo Swagger: <link>http://localhost:8080/swagger-ui.html.

@@ -44,8 +44,8 @@ public class Pedido extends AbstractEntity {
     private Long codigoCliente;
 
     @Size(max = 300, message = "Qtde de caracteres da descrição/nome ultrapassa o valor permitido igual à 300")
-    @NotBlank(message = "Insira uma descricao e/ou nome válido para o produto")
-    @NotNull(message = "Insira uma  descricao e/ou nome válida para o produto")
+    @NotBlank(message = "Insira uma descricao e/ou nome válido para o produto.")
+    @NotNull(message = "Insira uma  descricao e/ou nome válida para o produto.")
     @Column(name = "nome_produto")
     private String nomeProduto;
 
