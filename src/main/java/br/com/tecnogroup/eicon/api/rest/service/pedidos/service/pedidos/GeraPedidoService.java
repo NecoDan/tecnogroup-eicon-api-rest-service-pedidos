@@ -27,6 +27,7 @@ public class GeraPedidoService implements IGeraPedidoService {
     private final IBuilderDescontoService builderDescontoService;
 
     @Override
+    @Transactional(value = Transactional.TxType.REQUIRED)
     public List<Pedido> gerarPedidos(List<Pedido> pedidos) throws ServiceException {
         validarGeracaoPedidosFromList(pedidos);
         List<Pedido> pedidoListNovos = new ArrayList<>();

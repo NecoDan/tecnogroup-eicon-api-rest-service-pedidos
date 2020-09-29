@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "SourceFont")
 public class SourceController {
 
-    private static final String URL_REPOSITORIO_GIT_HUB = "https://github.com/NecoDan/vermont-desafio-api-rest-generics";
+    private static final String URL_REPOSITORIO_GIT_HUB = "https://github.com/NecoDan/tecnogroup-eicon-api-rest-service-pedidos";
 
     @ApiOperation(value = "Acessar o repósitório no GitHub pelo link externo")
     @GetMapping("/sources")

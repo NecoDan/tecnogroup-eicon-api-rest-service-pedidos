@@ -23,6 +23,7 @@ public class Cliente extends AbstractEntity {
     @Tolerate
     public Cliente() {
         super();
+        this.codigo = 0L;
     }
 
     @NotNull(message = "Nenhum codigo de cliente informado. Inválido e/ou inexistente {NULL}.")

@@ -14,7 +14,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Period;
 import java.util.Objects;
 
 @ToString
@@ -29,6 +28,9 @@ public class Pedido extends AbstractEntity {
     @Tolerate
     public Pedido() {
         super();
+        this.numeroControle = 0L;
+        this.codigoCliente = 0L;
+        this.nomeProduto = "";
     }
 
     @NotNull(message = "Nenhum número de controle atrelado ao pedido informado. Inválido e/ou inexistente.")
